@@ -12,6 +12,13 @@ SV_FILES = -y $(RTL_PATH) \
 
 .PHONY: gen exe all clean 
 
+TRACE = 1
+SCENARIO = "add wave -r sim:main/*; run 5000ms"
+
+ifeq ($(TRACE), 0)
+    SCENARIO = "run 5000ms"
+endif
+
 all:
 	make VLOG
 	make VSIM
@@ -21,7 +28,7 @@ VLOG:
 	vlog  $(uvm_opts) $(TB_PATH)/$(TOP_RTL_FILE)    $(SV_FILES)    -timescale "1ns/1ns"
 
 VSIM:
-	vsim  -sv_lib $(UVM_HOME)/linux/uvm_dpi   +UVM_NO_RELNOTES   work.main  -suppress 19 -do scenario.do
+	vsim  -sv_lib $(UVM_HOME)/linux/uvm_dpi   +UVM_NO_RELNOTES   work.main  -suppress 19 -do $(SCENARIO)
 
 clean:
 	rm -rf work

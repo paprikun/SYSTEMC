@@ -10,7 +10,8 @@ EXE          = simu
 
 LDFLAGS = " -Wl,-rpath,$(SYSTEMC)/lib-linux64  -luvm-systemc  "
 
-.PHONY: gen exe all clean 
+TRACE = 1
+.PHONY: gen exe all clean sim
 
 all:
 	make gen
@@ -22,6 +23,9 @@ gen:
 
 exe:
 	make -C $(OBJ_DIR) -f $(patsubst %,V%.mk, $(TOP_RTL)) 
+
+sim:
+	./simu $(TRACE)
 
 clean:
 	rm -rf obj_dir

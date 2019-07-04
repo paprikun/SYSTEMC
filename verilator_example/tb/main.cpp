@@ -6,17 +6,25 @@ using namespace uvm;
 #include "uvm/vip_if.h"
 #include "uvm/env.h"
 #include "Vtop.h"
-#define TRACE
 
 
 int sc_main(int argc, char * argv[])
 {
-#ifdef TRACE
+
+   int TRACE = 1;
+TRACE = 1;
+ if (argc == 2)
+        TRACE  = atoi ( argv[1]);
+
+ VerilatedVcdSc* tfp;
+
+
+if (TRACE){
    // Verilator trace file
    Verilated::traceEverOn(true);
-   VerilatedVcdSc* tfp = new VerilatedVcdSc;
-#endif
-    
+  
+}
+   tfp = new VerilatedVcdSc;
     
    sc_time T(10,SC_NS);
    sc_clock clk("clk",T);
@@ -36,19 +44,20 @@ int sc_main(int argc, char * argv[])
    driver<bus_trans, bus_trans>*    drv;  
    
    env e1("vif1");   
-   
-#ifdef TRACE
+ 
+if (TRACE){
    // Verilator trace file, depth
    dut.trace(tfp, 0);
    tfp->open("simu.vcd");
-#endif
+}
 
 
     uvm::run_test();
   
 
-#ifdef TRACE
+if (TRACE){
    tfp->close();
-#endif
+}
+
    return 0;
 }
