@@ -37,7 +37,7 @@ class monitor : public uvm::uvm_monitor
             UVM_ERROR("", "period");
             printf ("expected value: %d and received value %d\n", 256   , timer_start - timer_start_last   );
             wait(100,SC_NS);
-            //sc_stop();
+            sc_stop();
         }
         timer_start_last = timer_start;
         sc_core::wait( dut_vif->out.negedge_event());
@@ -47,7 +47,7 @@ class monitor : public uvm::uvm_monitor
             UVM_ERROR("", "duty cycle");
             printf ("expected value: %d and received value %d\n", dut_vif->in_last %  256   , (timer_finish - timer_start )   );
             wait(100,SC_NS);
-           // sc_stop();
+            sc_stop();
         }
     }
   }
